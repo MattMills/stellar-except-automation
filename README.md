@@ -34,5 +34,11 @@ Builds an export CSV that correlates as many functions as possible between two v
 
 ## Other
 
+### stellar-env.sh
+Sets various environment variables to configure system layout
+
+### ghidra-automatic.sh
+Primary script; finds all available executables for ghidra analysis and runs ghidra import.
+
 ### stellar-fnaddr.sql
 Database schema for current DB.
