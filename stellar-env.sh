@@ -1,0 +1,6 @@
+export GHIDRA_PATH="/zpool0/share/ghidra_10.1.5_PUBLIC"
+export GHIDRA_PROJECTS="/zpool0/share/ghidra_projects/"
+export GHIDRA_SCRIPTS="/zpool0/share/stellar-except-automation"
+export STELLAR_BACKUPS_GOG="/zpool0/share/stellaris_backups_gog"
+export STELLAR_BACKUPS_STEAM="/zpool0/share/stellaris_backups_steam"
+export WINDOWS_USER_HOST="Matt@10.5.10.2"
