@@ -32,49 +32,28 @@ do
 
 	DBG_FILE="$DIRNAME/$BASENAME_NO_EXT.pdb"
 	EXE_FILE="$DIRNAME/$BASENAME_NO_EXT.exe"
+    PDB_FILE="$BASENAME_NO_EXT.pdb"
 
 
-	echo "=============================================================="
-	echo "|"
-	echo "|"
 	echo "| Starting analysis for platform $PLATFORM version $VERSION"
-	echo "|"
-	echo "|"
-	echo "=============================================================="
 
 	DBG_EXISTS=0
 
 	if [ -f "$DBG_FILE" ]; then
 		echo "Found PDB for $VERSION"
 		GHIDRA_DEST_PATH="stellaris-auto/$VERSION/$PLATFORM/"
-		if [ -f "$DBG_FILE.xml" ]; then
+		if [ -f "$DBG_FILE.xml.zip" ]; then
 			echo ".pdb.xml for $VERSION already exists, skipping"
 		else
 			echo "Creating .pdb.xml for $VERSION"
 			scp $DBG_FILE $WINDOWS_USER_HOST:
-			ssh $WINDOWS_USER_HOST "pdb.exe $BASENAME > $BASENAME.xml"
-			scp $WINDOWS_USER_HOST:$BASENAME.xml $DIRNAME
-			ssh $WINDOWS_USER_HOST del $BASENAME $BASENAME.xml
+			ssh $WINDOWS_USER_HOST "pdb.exe $PDB_FILE > $PDB_FILE.xml"
+            ssh $WINDOWS_USER_HOST "\"C:\Program Files\7-Zip\7z.exe\" a $PDB_FILE.xml.zip $PDB_FILE.xml "
+			scp $WINDOWS_USER_HOST:$PDB_FILE.xml.zip $DIRNAME
+			ssh $WINDOWS_USER_HOST del $PDB_FILE $PDB_FILE.xml $PDB_FILE.xml.zip
+            
 		fi
 	else
 		GHIDRA_DEST_PATH="stellaris/$VERSION/no_pdb_$PLATFORM/"
-
 	fi
-
-	
-
-	echo "Running Ghidra Import"
-
-	$GHIDRA_PATH/support/analyzeHeadless \
-#		$GHIDRA_PROJECTS $GHIDRA_DEST_PATH \
-        $GHIDRA_URL/$GHIDRA_DEST_PATH \
-		-import $EXE_FILE \
-		-preScript ghidra_prescript.py $DBG_FILE.xml \
-		-scriptPath $GHIDRA_SCRIPTS/analysis/ \
-		-max-cpu 12
-
-	echo
-	echo
-	echo
-
 done
