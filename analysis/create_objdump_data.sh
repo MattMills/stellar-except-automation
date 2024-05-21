@@ -1,11 +1,31 @@
 #!/bin/bash
 
-FOLDER="exec"
-VERSION="3.5.2"
-PLATFORM="gog"
-OS="windows"
-EXECUTABLE="stellaris.exe"
-FULL_EXEC_PATH="$FOLDER/$VERSION/$PLATFORM/$OS/$EXECUTABLE"
+do_help () {
+    echo "";
+    echo "Syntax: $0 -x path_to_executable";
+    exit;
+}
+
+
+while getopts x: flag
+do
+    case "${flag}" in 
+        x) FULL_EXEC_PATH=${OPTARG};;
+    esac
+done
+
+
+if [[ -z "$FULL_EXEC_PATH" ]]; then
+    do_help
+fi
+
+
+#FOLDER="/var/www/html/stellar-except/exec"
+#VERSION="3.8.4"
+#PLATFORM="steam"
+#OS="windows"
+#EXECUTABLE="stellaris.exe"
+#FULL_EXEC_PATH="$FOLDER/$VERSION/$PLATFORM/$OS/$EXECUTABLE"
 
 objdump -p $FULL_EXEC_PATH  > $FULL_EXEC_PATH.objdump
 
